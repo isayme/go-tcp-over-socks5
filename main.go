@@ -73,13 +73,18 @@ func main() {
 
 func handleConnection(dialer func(network, address string) (net.Conn, error), conn net.Conn, addr string) {
 	defer conn.Close()
+	fmt.Printf("new connection %s -> %s\n", conn.RemoteAddr().String(), addr)
 
 	remote, err := dialer("tcp", addr)
 	if err != nil {
 		fmt.Printf("dial %s fail: %v\n", addr, err)
+		return
 	}
 	defer remote.Close()
+	fmt.Printf("connec proxy %s ok\n", addr)
 
 	go io.Copy(conn, remote)
 	io.Copy(remote, conn)
+
+	fmt.Printf("connection %s -> %s closed\n", conn.RemoteAddr().String(), addr)
 }
