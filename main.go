@@ -54,6 +54,7 @@ func main() {
 			return err
 		}
 
+		fmt.Printf("listen address: '%v'\n", addr)
 		for {
 			conn, err := l.Accept()
 			if err != nil {
